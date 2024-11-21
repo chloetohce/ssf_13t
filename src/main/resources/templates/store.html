@@ -25,8 +25,8 @@
     <h1 class="text-center mb-3">Items</h1>
     
     <!-- Item page -->
-    <div class="row row-cols-3" style="width: 75%; margin-right: auto; margin-left: auto;">
-        <div class="card col p-0" th:block th:each="item : ${items}">
+    <div class="row row-cols-3 mx-auto" style="width: 75%;">
+        <div class="card col p-0 mb-3" th:each="item : ${items}">
             <img th:src=" @{${item.imageSrc}}" class="card-img-top" alt="image" style="height: 20vw; object-fit: cover;">
             <div class="card-body d-flex flex-column">
                 <h5 class="card-title"><span th:text="${item.name}"></span></h5>
@@ -34,16 +34,17 @@
                     <span th:text="${item.quantity}"></span> left
                 </small>
                 <br>
-                <form method="post" action="/store/buy" th:object="${singleItem}">
-                    <input type="text" th:value="${item.id}" th:field="*{id}" name="id" id="id" hidden></input>
-                    <!-- <input type="text" th:value="${item.id}" name="id" id="id" disabled></input> -->
-                    <input type="text" th:value="${item.imageSrc}" th:field="*{imageSrc}">
-                    <input type="text" th:value="${item.name}" th:field="*{name}">
-                    <input type="text" th:value="${item.quantity}" th:field="*{quantity}">
-                    <input type="text" th:value="${item.sold}" th:field="*{sold}">
-                    <input type="text" th:value="${item.id}" th:field="*{id}">
+                <form method="post" th:action="@{/store/buy}" th:object="${item}" class="mt-auto">
+                    <input type="hidden" th:value="${item.id}" name="id" id="id" />
+                    <input type="hidden" th:value="${item.imageSrc}" name="imageSrc" />
+                    <input type="hidden" th:value="${item.name}" name="name" />
+                    <input type="hidden" th:value="${item.quantity}" name="quantity" />
+                    <input type="hidden" th:value="${item.sold}" name="sold" />
                     
-                    <button class="btn btn-success w-100 mt-auto" type="submit" th:formaction="@{/store/buy(itemId=${item.id})}">Buy</button>
+                    <!-- ALERT -->
+                    <small th:if="${errorItemId == item.id}" th:errors="${item.quantity}" class="text-danger"></small>
+
+                    <button class="btn btn-success w-100" type="submit" >Buy</button>
                 </form>
             </div>
             <div class="card-footer">

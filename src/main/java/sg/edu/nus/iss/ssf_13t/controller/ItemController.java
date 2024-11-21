@@ -28,29 +28,31 @@ public class ItemController {
 
     @GetMapping(path = {"","/"})
     public String storePage(HttpSession session, Model model) {
-        List<Item> items = itemService.getAllItems();
-        model.addAttribute("items", items);
-        model.addAttribute("singleItem", new Item());
         model.addAttribute("username", session.getAttribute("username"));
+        model.addAttribute("item", new Item());
         return "store";
     }
 
     @PostMapping("/buy")
-    public String buyPage(@Valid @ModelAttribute("singleItem") Item item,
-            BindingResult result, HttpSession session, Model model) {
+    public String buyPage(@Valid @ModelAttribute Item item, BindingResult result, Model model) {
+
         String id = item.getId();
-        System.out.println("ID: " + id);
-        System.out.println("Name: " + item.getName());
+        // System.out.println("ID: " + id);
+        // System.out.println("Name: " + item.getName());
         Item itemFromDb = itemService.findById(id);
 
-        if (itemFromDb.isSoldOut()) {
-            // Add a global error to the BindingResult
-            ObjectError err = new ObjectError("global", "%s is already sold out.".formatted(itemFromDb.getName()));
-            result.addError(err);
-            return "store"; // Return to the same page with the error
+        if (result.hasErrors()) {
+            model.addAttribute("errorItemId", id);
+            return "store";
         }
+
         itemFromDb.buy();
         return "redirect:/store";
+    }
+
+    @ModelAttribute("items")
+    public List<Item> populateItems() {
+        return itemService.getAllItems();
     }
     
 }
