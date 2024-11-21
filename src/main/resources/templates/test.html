@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Page</title>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Iterate over the items -->
+            <tr th:each="item : ${items}">
+                <form th:action="@{/test/submit}" method="post">
+                    <td>
+                        <!-- Name Field -->
+                        <input type="text" name="name" th:value="${item.name}" />
+                    </td>
+                    <td>
+                        <!-- Age Field -->
+                        <input type="number" name="age" th:value="${item.age}" />
+                    </td>
+                    <td>
+                        <!-- Hidden Field for ID -->
+                        <input type="hidden" name="id" th:value="${item.id}" />
+                        <!-- Submit Button -->
+                        <button type="submit">Submit</button>
+                    </td>
+                </form>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

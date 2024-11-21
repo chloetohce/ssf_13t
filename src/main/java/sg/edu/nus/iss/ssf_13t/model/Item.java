@@ -1,11 +1,11 @@
 package sg.edu.nus.iss.ssf_13t.model;
 
 public class Item {
-    private final String id;
-    private final String name;
+    private String id;
+    private String name;
     private int sold;
     private int quantity;
-    private final String imageSrc;
+    private String imageSrc;
 
     public Item(String id, String name, int sold, int quantity, String imageSrc) {
         this.id = id;
@@ -15,6 +15,9 @@ public class Item {
         this.imageSrc = imageSrc;
     }
     
+    public Item() {
+    }
+
     public void buy() {
         sold += 1;
         quantity -= 1;
